@@ -1,7 +1,7 @@
 package Tux2.TuxTwoLib;
 
-import net.minecraft.server.v1_4_5.NBTBase;
-import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.NBTBase;
+import net.minecraft.server.NBTTagCompound;
 
 import org.bukkit.enchantments.Enchantment;
 

@@ -22,7 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class TuxTwoLib extends JavaPlugin {
 	
-	String ttlbuild = "2";
+	String ttlbuild = "3";
 	String bukkitdlurl = "http://dev.bukkit.org/media/files/";
 	public boolean hasupdate = false;
 	public String newversion = "";
@@ -60,6 +60,7 @@ public class TuxTwoLib extends JavaPlugin {
     	String ver = getServer().getBukkitVersion();
     	Matcher bukkitmatch = bukkitversion.matcher(ver);
     	//----------------1.4.5-R0.3 code--------------------
+    	/*
     	if(bukkitmatch.find()) {
     		String mcversion = bukkitmatch.group(1);
     		String craftbukkitrevision = bukkitmatch.group(2);
@@ -144,16 +145,16 @@ public class TuxTwoLib extends JavaPlugin {
     			}
     		}
     	}
-    	
+    	*/
     	//----------------1.4.5-R0.2 and below code--------------------
-    	/*
+    	
     	if(bukkitmatch.find()) {
     		String mcversion = bukkitmatch.group(1);
     		String craftbukkitrevision = bukkitmatch.group(2);
 			String[] mcver = mcversion.split("\\.");
-			int minor = Integer.parseInt(mcver[1]);
+			double major = Double.parseDouble(mcver[0] + "." + mcver[1]);
 			int build = Integer.parseInt(mcver[2]);
-    		if(!(mcver[0].equals("1") && minor <=4 && build < 5)) {
+    		if((major == 1.4 && build > 5) || (major > 1.4)) {
     			if(autodownloadupdateonnewmcversion) {
 					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
     				boolean result = updatePlugin(mcversion, craftbukkitrevision, false);
@@ -231,7 +232,7 @@ public class TuxTwoLib extends JavaPlugin {
     	    		}
     			}
     		}
-    	}*/
+    	}
     }
     
     public void onDisable() {

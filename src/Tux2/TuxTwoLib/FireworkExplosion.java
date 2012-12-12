@@ -2,7 +2,7 @@ package Tux2.TuxTwoLib;
 
 import java.util.ArrayList;
 
-import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.NBTTagCompound;
 
 /**
  * Class, that stores informations about firework's and firework's star

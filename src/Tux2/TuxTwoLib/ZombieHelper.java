@@ -1,8 +1,8 @@
 package Tux2.TuxTwoLib;
 
-import net.minecraft.server.v1_4_5.EntityZombie;
+import net.minecraft.server.EntityZombie;
 
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftZombie;
+import org.bukkit.craftbukkit.entity.CraftZombie;
 import org.bukkit.entity.Zombie;
 
 /**

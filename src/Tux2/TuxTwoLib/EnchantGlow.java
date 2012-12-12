@@ -1,9 +1,9 @@
 package Tux2.TuxTwoLib;
 
-import net.minecraft.server.v1_4_5.NBTTagCompound;
-import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.NBTTagList;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -19,7 +19,7 @@ public class EnchantGlow {
 	 * @return the item stack
 	 */
 	public static ItemStack addGlow(ItemStack item) {
-		net.minecraft.server.v1_4_5.ItemStack nmsStack = null;
+		net.minecraft.server.ItemStack nmsStack = null;
 		CraftItemStack craftStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;
@@ -49,7 +49,7 @@ public class EnchantGlow {
 	 * @return the item stack
 	 */
 	public static ItemStack removeGlow(ItemStack item) {
-		net.minecraft.server.v1_4_5.ItemStack nmsStack = null;
+		net.minecraft.server.ItemStack nmsStack = null;
 		CraftItemStack craftStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;

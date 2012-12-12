@@ -5,11 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import net.minecraft.server.v1_4_5.ItemStack;
-import net.minecraft.server.v1_4_5.NBTBase;
-import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.NBTBase;
+import net.minecraft.server.NBTTagCompound;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 
 public class TuxTwoNBTData {
 	

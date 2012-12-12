@@ -1,9 +1,9 @@
 package Tux2.TuxTwoLib;
 
-import net.minecraft.server.v1_4_5.EntityWolf;
+import net.minecraft.server.EntityWolf;
 
 import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.Wolf;
 
 /**

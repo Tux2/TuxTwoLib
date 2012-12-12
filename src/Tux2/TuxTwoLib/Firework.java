@@ -1,9 +1,9 @@
 package Tux2.TuxTwoLib;
 
-import net.minecraft.server.v1_4_5.NBTTagCompound;
-import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.NBTTagList;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -40,7 +40,7 @@ public class Firework {
 	public ItemStack setExplosions(ItemStack item, FireworkExplosion... exps) {
 		if (!isApplicable(item)) return null;
 		CraftItemStack craftStack = null;
-		net.minecraft.server.v1_4_5.ItemStack itemStack = null;
+		net.minecraft.server.ItemStack itemStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;
 			itemStack = craftStack.getHandle();
@@ -78,7 +78,7 @@ public class Firework {
 			FireworkExplosion explosion) {
 		if (!isApplicable(item)) return null;
 		CraftItemStack craftStack = null;
-		net.minecraft.server.v1_4_5.ItemStack itemStack = null;
+		net.minecraft.server.ItemStack itemStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;
 			itemStack = craftStack.getHandle();
@@ -114,7 +114,7 @@ public class Firework {
 	public static FireworkExplosion[] getExplosions(ItemStack item) {
 		if (!isApplicable(item)) return null;
 		CraftItemStack craftStack = null;
-		net.minecraft.server.v1_4_5.ItemStack itemStack = null;
+		net.minecraft.server.ItemStack itemStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;
 			itemStack = craftStack.getHandle();
@@ -151,7 +151,7 @@ public class Firework {
 	public static ItemStack setFlight(ItemStack item, int flight) {
 		if (!isApplicable(item)) return null;
 		CraftItemStack craftStack = null;
-		net.minecraft.server.v1_4_5.ItemStack itemStack = null;
+		net.minecraft.server.ItemStack itemStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;
 			itemStack = craftStack.getHandle();
@@ -184,7 +184,7 @@ public class Firework {
 	public static int getFlight(ItemStack item) {
 		if (!isApplicable(item)) return -1;
 		CraftItemStack craftStack = null;
-		net.minecraft.server.v1_4_5.ItemStack itemStack = null;
+		net.minecraft.server.ItemStack itemStack = null;
 		if (item instanceof CraftItemStack) {
 			craftStack = (CraftItemStack) item;
 			itemStack = craftStack.getHandle();

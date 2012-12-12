@@ -1,9 +1,9 @@
 package Tux2.TuxTwoLib;
 
-import net.minecraft.server.v1_4_5.EntitySkeleton;
+import net.minecraft.server.EntitySkeleton;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftSkeleton;
+import org.bukkit.craftbukkit.entity.CraftSkeleton;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.inventory.ItemStack;
 

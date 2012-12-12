@@ -3,16 +3,16 @@ package Tux2.TuxTwoLib;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_4_5.CraftingManager;
-import net.minecraft.server.v1_4_5.IRecipe;
-import net.minecraft.server.v1_4_5.InventoryCrafting;
-import net.minecraft.server.v1_4_5.ItemStack;
-import net.minecraft.server.v1_4_5.NBTTagCompound;
-import net.minecraft.server.v1_4_5.ShapelessRecipes;
+import net.minecraft.server.CraftingManager;
+import net.minecraft.server.IRecipe;
+import net.minecraft.server.InventoryCrafting;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.ShapelessRecipes;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 
 /**
  * Class, that allows adding custom shaped recipe which returns item with NBT
@@ -44,10 +44,10 @@ public class CustomShapelessRecipe extends ShapelessRecipes implements IRecipe {
 	@Override
 	public ItemStack a(InventoryCrafting arg0) {
 		ItemStack item = result.cloneItemStack();
-		org.bukkit.inventory.ItemStack[] inventory = new org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack[arg0
+		org.bukkit.inventory.ItemStack[] inventory = new org.bukkit.craftbukkit.inventory.CraftItemStack[arg0
 				.getSize()];
 		for (int i = 0; i < arg0.getContents().length; i++)
-			inventory[i] = new org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack(
+			inventory[i] = new org.bukkit.craftbukkit.inventory.CraftItemStack(
 					arg0.getContents()[i]);
 		if (result.getTag() != null)
 			item.setTag((NBTTagCompound) result.getTag().clone());
