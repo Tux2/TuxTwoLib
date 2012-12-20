@@ -2,12 +2,12 @@ package Tux2.TuxTwoLib;
 
 import java.io.File;
 
-import net.minecraft.server.v1_4_5.EntityPlayer;
-import net.minecraft.server.v1_4_5.ItemInWorldManager;
-import net.minecraft.server.v1_4_5.MinecraftServer;
+import net.minecraft.server.v1_4_6.EntityPlayer;
+import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_6.PlayerInteractManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_5.CraftServer;
+import org.bukkit.craftbukkit.v1_4_6.CraftServer;
 import org.bukkit.entity.Player;
 
 public class TuxTwoPlayer {
@@ -33,7 +33,7 @@ public class TuxTwoPlayer {
 				if(playername.trim().equalsIgnoreCase(player)) {
 					//This player plays on the server!
 					MinecraftServer server = ((CraftServer)Bukkit.getServer()).getServer();
-					EntityPlayer entity = new EntityPlayer(server, server.getWorldServer(0), playername, new ItemInWorldManager(server.getWorldServer(0)));
+					EntityPlayer entity = new EntityPlayer(server, server.getWorldServer(0), playername, new PlayerInteractManager(server.getWorldServer(0)));
 					Player target = (entity == null) ? null : (Player) entity.getBukkitEntity();
 					if(target != null) {
 						target.loadData();

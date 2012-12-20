@@ -59,11 +59,11 @@ public class TuxTwoLib extends JavaPlugin {
     	Pattern bukkitversion = Pattern.compile("(\\d\\.\\d\\.\\d)-R(\\d\\.\\d)");
     	String ver = getServer().getBukkitVersion();
     	Matcher bukkitmatch = bukkitversion.matcher(ver);
-    	//----------------1.4.5-R0.3 code--------------------
+    	//----------------1.4.6-R0.1 code--------------------
     	if(bukkitmatch.find()) {
     		String mcversion = bukkitmatch.group(1);
     		String craftbukkitrevision = bukkitmatch.group(2);
-    		if(!mcversion.equals("1.4.5")) {
+    		if(!mcversion.equals("1.4.6")) {
     			if(autodownloadupdateonnewmcversion) {
 					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
     				boolean result = updatePlugin(mcversion, craftbukkitrevision, false);
@@ -90,148 +90,27 @@ public class TuxTwoLib extends JavaPlugin {
     			//register events for server admins.
     			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
     		}else {
-    			//Version string matches, now to get the build number
-    			//and make sure we are running the right version.
-    			String[] split = craftbukkitrevision.split("\\.");
-    			int majorrev = Integer.parseInt(split[0]);
-    			int minorrev = Integer.parseInt(split[1]);
-    			//See if the version is less than 0.3
-    			if(majorrev < 1 && minorrev < 3) {
-    				if(autodownloadupdateonnewmcversion) {
-    					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
-        				boolean result = updatePlugin(mcversion, craftbukkitrevision, false);
-        				if(result && !updatefailed) {
-        					getLogger().warning("New version downloaded successfully. Make sure to restart your server to restore full functionality!");
-        				}else {
-        					getLogger().severe("New version download was unsuccessful. Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        				}
-        			}else {
-        				if(checkforupdates) {
-        					String versioncheck = updateAvailable(mcversion, craftbukkitrevision, true);
-        	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
-        	    				newversion = versioncheck;
-                    			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        	    			}else {
-        	        			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        	    			}
-        				}else {
-                			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        				}
-        			}
-    				incompatiblemcversion = true;
-        			//register events for server admins.
-        			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
-    			}else {
-    				//This version of minecraft is compatible. Let's do the optional update check.
-    				if(checkforupdates) {
-    	    			String versioncheck = updateAvailable(mcversion, craftbukkitrevision, false);
-    	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
-    	    				//We have an update! Set the newversion string to the name of the new version.
-    	    				newversion = versioncheck;
-    	    				//We can update the plugin in the background.
-    	    				if(autodownloadupdates) {
-    	    					getLogger().warning("Update available! Downloading in the background.");
-        	    				if(!updatePlugin(mcversion, craftbukkitrevision, true)) {
-        	    					getLogger().info("Update failed! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/ manually.");
-        	    				}
-    	    				}else {
-    	    					getLogger().info("A new version for your version of Craftbukkit is available! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
+				//This version of minecraft is compatible. Let's do the optional update check.
+				if(checkforupdates) {
+	    			String versioncheck = updateAvailable(mcversion, craftbukkitrevision, false);
+	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
+	    				//We have an update! Set the newversion string to the name of the new version.
+	    				newversion = versioncheck;
+	    				//We can update the plugin in the background.
+	    				if(autodownloadupdates) {
+	    					getLogger().warning("Update available! Downloading in the background.");
+    	    				if(!updatePlugin(mcversion, craftbukkitrevision, true)) {
+    	    					getLogger().info("Update failed! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/ manually.");
     	    				}
-    	    			}
-    	    			//register events for server admins.
-    	    			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
-    	    		}
-    			}
-    		}
+	    				}else {
+	    					getLogger().info("A new version for your version of Craftbukkit is available! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
+	    				}
+	    			}
+	    			//register events for server admins.
+	    			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
+	    		}
+			}
     	}
-    	
-    	//----------------1.4.5-R0.2 and below code--------------------
-    	/*
-    	if(bukkitmatch.find()) {
-    		String mcversion = bukkitmatch.group(1);
-    		String craftbukkitrevision = bukkitmatch.group(2);
-			String[] mcver = mcversion.split("\\.");
-			int minor = Integer.parseInt(mcver[1]);
-			int build = Integer.parseInt(mcver[2]);
-    		if(!(mcver[0].equals("1") && minor <=4 && build < 5)) {
-    			if(autodownloadupdateonnewmcversion) {
-					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
-    				boolean result = updatePlugin(mcversion, craftbukkitrevision, false);
-    				if(result && !updatefailed) {
-    					getLogger().warning("New version downloaded successfully. Make sure to restart your server to restore full functionality!");
-    				}else {
-        				incompatiblemcversion = true;
-    					getLogger().severe("New version download was unsuccessful. Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-    				}
-    			}else {
-    				if(checkforupdates) {
-    					String versioncheck = updateAvailable(mcversion, craftbukkitrevision, true);
-    	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
-    	    				newversion = versioncheck;
-                			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-    	    			}else {
-    	        			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-    	    			}
-    				}else {
-            			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-    				}
-    			}
-    			incompatiblemcversion = true;
-    			//register events for server admins.
-    			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
-    		}else {
-    			//Version string matches, now to get the build number
-    			//and make sure we are running the right version.
-    			double rev = Double.parseDouble(craftbukkitrevision);
-    			//See if the version is less than 0.3
-    			if(mcversion.equals("1.4.5") && rev > 0.2) {
-    				if(autodownloadupdateonnewmcversion) {
-    					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
-        				boolean result = updatePlugin(mcversion, craftbukkitrevision, false);
-        				if(result && !updatefailed) {
-        					getLogger().warning("New version downloaded successfully. Make sure to restart your server to restore full functionality!");
-        				}else {
-        					getLogger().severe("New version download was unsuccessful. Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        				}
-        			}else {
-        				if(checkforupdates) {
-        					String versioncheck = updateAvailable(mcversion, craftbukkitrevision, true);
-        	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
-        	    				newversion = versioncheck;
-                    			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        	    			}else {
-        	        			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        	    			}
-        				}else {
-                			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download the correct version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-        				}
-        			}
-    				incompatiblemcversion = true;
-        			//register events for server admins.
-        			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
-    			}else {
-    				//This version of minecraft is compatible. Let's do the optional update check.
-    				if(checkforupdates) {
-    	    			String versioncheck = updateAvailable(mcversion, craftbukkitrevision, false);
-    	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
-    	    				//We have an update! Set the newversion string to the name of the new version.
-    	    				newversion = versioncheck;
-    	    				//We can update the plugin in the background.
-    	    				if(autodownloadupdates) {
-    	    					getLogger().warning("Update available! Downloading in the background.");
-        	    				if(!updatePlugin(mcversion, craftbukkitrevision, true)) {
-        	    					getLogger().info("Update failed! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/ manually.");
-        	    				}
-    	    				}else {
-    	    					getLogger().info("A new version for your version of Craftbukkit is available! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
-    	    				}
-    	    			}
-    	    			//register events for server admins.
-    	    			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
-    	    		}
-    			}
-    		}
-    	}*/
     }
     
     public void onDisable() {
