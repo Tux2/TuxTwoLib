@@ -23,20 +23,18 @@ public class DownloadPluginThread implements Runnable {
 	
 	@Override
 	public void run() {
-		String[] detailssplit = dldetails.split(",");
-		String versionnumber = detailssplit[0];
 		File tempfile = new File(downloadlocation + File.separator + "TuxTwoLib.jar.part");
 		try {
 			URL website;
-			website = new URL(plugin.bukkitdlurl + detailssplit[1]);
+			website = new URL(dldetails);
 			ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 			FileOutputStream fos = new FileOutputStream(tempfile);
 		    fos.getChannel().transferFrom(rbc, 0, 1 << 24);
 		    fos.close();
-		    if(destination.delete() && tempfile.renameTo(destination)) {
+		    destination.delete();
+		    if(tempfile.renameTo(destination)) {
 		    	plugin.hasupdate = true;
-		    	plugin.newversion = versionnumber;
-		    	plugin.getLogger().warning("Updated to version " + versionnumber + ". Please restart your server.");
+		    	plugin.getLogger().warning("Updated to version " + plugin.versionName + ". Please restart your server.");
 		    	return;
 		    }else {
 		    	plugin.updatefailed = true;
@@ -45,7 +43,7 @@ public class DownloadPluginThread implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	plugin.newversion = versionnumber;
+    	plugin.newversion = plugin.versionName;
 	    plugin.hasupdate = false;
 	}
 

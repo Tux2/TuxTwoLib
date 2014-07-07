@@ -1,19 +1,19 @@
 package Tux2.TuxTwoLib;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.Proxy;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  * TuxTwoLib for Bukkit
@@ -23,7 +23,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class TuxTwoLib extends JavaPlugin {
 	
 	String ttlbuild = "2";
-	String bukkitdlurl = "http://dev.bukkit.org/media/files/";
 	public boolean hasupdate = false;
 	public String newversion = "";
 	public boolean updatefailed = false;
@@ -31,6 +30,15 @@ public class TuxTwoLib extends JavaPlugin {
 	boolean autodownloadupdates = true;
 	boolean autodownloadupdateonnewmcversion = true;
 	public boolean updatesuccessful = false;
+	
+	String currentMCversion = "1.7.9";
+
+    String versionName = null;
+    private String versionLink = null;
+    String mcversion = currentMCversion;
+
+    private static final String TITLE_VALUE = "name"; // Gets remote file's title
+    private static final String LINK_VALUE = "downloadUrl"; // Gets remote file's download link
 	
 	boolean incompatiblemcversion = false;
 	
@@ -56,17 +64,16 @@ public class TuxTwoLib extends JavaPlugin {
     	autodownloadupdateonnewmcversion = config.getBoolean("AutoUpdateOnMinecraftVersionChange", true);
     	checkforupdates = config.getBoolean("CheckForUpdates", true);
     	
-    	Pattern bukkitversion = Pattern.compile("(\\d\\.\\d\\.\\d)-R(\\d\\.\\d)");
+    	Pattern bukkitversion = Pattern.compile("(\\d\\.\\d\\.?\\d?)-R(\\d\\.\\d)");
     	String ver = getServer().getBukkitVersion();
     	Matcher bukkitmatch = bukkitversion.matcher(ver);
-    	//----------------1.4.6-R0.1 code--------------------
+    	//----------------1.5 code--------------------
     	if(bukkitmatch.find()) {
-    		String mcversion = bukkitmatch.group(1);
-    		String craftbukkitrevision = bukkitmatch.group(2);
-    		if(!mcversion.equals("1.4.6")) {
+    		mcversion = bukkitmatch.group(1);
+    		if(!mcversion.equals(currentMCversion)) {
     			if(autodownloadupdateonnewmcversion) {
 					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
-    				boolean result = updatePlugin(mcversion, craftbukkitrevision, false);
+    				boolean result = updatePlugin(mcversion, false);
     				if(result && !updatefailed) {
     					getLogger().warning("New version downloaded successfully. Make sure to restart your server to restore full functionality!");
     				}else {
@@ -75,8 +82,8 @@ public class TuxTwoLib extends JavaPlugin {
     				}
     			}else {
     				if(checkforupdates) {
-    					String versioncheck = updateAvailable(mcversion, craftbukkitrevision, true);
-    	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
+    					String versioncheck = updateAvailable(mcversion, true);
+    	    			if(!versioncheck.equals("0")) {
     	    				newversion = versioncheck;
                 			getLogger().severe("Craftbukkit revision is incompatible with this build! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/");
     	    			}else {
@@ -92,14 +99,14 @@ public class TuxTwoLib extends JavaPlugin {
     		}else {
 				//This version of minecraft is compatible. Let's do the optional update check.
 				if(checkforupdates) {
-	    			String versioncheck = updateAvailable(mcversion, craftbukkitrevision, false);
-	    			if(!versioncheck.equals("0") && !versioncheck.equals("-1")) {
+	    			String versioncheck = updateAvailable(mcversion, true);
+	    			if(!versioncheck.equals("0")) {
 	    				//We have an update! Set the newversion string to the name of the new version.
 	    				newversion = versioncheck;
 	    				//We can update the plugin in the background.
 	    				if(autodownloadupdates) {
 	    					getLogger().warning("Update available! Downloading in the background.");
-    	    				if(!updatePlugin(mcversion, craftbukkitrevision, true)) {
+    	    				if(!updatePlugin(mcversion, true)) {
     	    					getLogger().info("Update failed! Please download " + newversion + " version of the library from http://dev.bukkit.org/server-mods/tuxtwolib/ manually.");
     	    				}
 	    				}else {
@@ -110,6 +117,8 @@ public class TuxTwoLib extends JavaPlugin {
 	    			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
 	    		}
 			}
+    	}else {
+    		getLogger().warning("Unable to verify minecraft version! MC version reported: " + ver);
     	}
     }
     
@@ -117,107 +126,91 @@ public class TuxTwoLib extends JavaPlugin {
     	
     }
     
-    public String updateAvailable(String version, String cbrev, boolean returnversion) {
-    	try {
-			URL updateurl = new URL("http://update.yu8.me/tuxtwolib.php");
-			HttpURLConnection con;
-			// Mineshafter creates a socks proxy, so we can safely bypass it
-	        // It does not reroute POST requests so we need to go around it
-	        if (isMineshafterPresent()) {
-	            con = (HttpURLConnection) updateurl.openConnection(Proxy.NO_PROXY);
-	        } else {
-	            con = (HttpURLConnection) updateurl.openConnection();
-	        }
-			con.setRequestMethod("POST");
-			con.setReadTimeout(1000);
-			con.setConnectTimeout(1000);
-			con.setDoInput(true);
-			con.setDoOutput(true);
-			con.setRequestProperty("User-Agent", "Mozilla/4.0");
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			String longurl = "version=" + URLEncoder.encode(version, "UTF-8") + "&rev=" + URLEncoder.encode(cbrev, "UTF-8") + "&build=" + URLEncoder.encode(ttlbuild, "UTF-8") + "&checkupdate=true";
-			if(returnversion) {
-				longurl = longurl + "&getcurrent=true";
-			}
-			con.setRequestProperty("Content-Length", String.valueOf(longurl.length()));
-			con.getOutputStream().write(longurl.getBytes());
-			InputStream in = con.getInputStream();
-			String url = readString(in);
-			if(url.trim().equalsIgnoreCase("0")) {
-				return "0";
-			}else {
-				return url;
-			}
-		} catch (MalformedURLException e) {
-			return "-1";
-		} catch (UnsupportedEncodingException e) {
-			return "-1";
-		} catch (IOException e) {
-			return "-1";
-		}
+    public String updateAvailable(String version, boolean returnversion) {
+    	boolean result = read();
+    	if(result) {
+    		if(returnversion) {
+        		return versionName;
+    		}else {
+    			return "1";
+    		}
+    	}else {
+    		return "0";
+    	}
     }
     
-    public boolean updatePlugin(String version, String cbrev, boolean threaded) {
-    	try {
-			URL updateurl = new URL("http://update.yu8.me/tuxtwolib.php");
-			HttpURLConnection con;
-			// Mineshafter creates a socks proxy, so we can safely bypass it
-	        // It does not reroute POST requests so we need to go around it
-	        if (isMineshafterPresent()) {
-	            con = (HttpURLConnection) updateurl.openConnection(Proxy.NO_PROXY);
-	        } else {
-	            con = (HttpURLConnection) updateurl.openConnection();
-	        }
-			con.setRequestMethod("POST");
-			con.setReadTimeout(1000);
-			con.setConnectTimeout(1000);
-			con.setDoInput(true);
-			con.setDoOutput(true);
-			con.setRequestProperty("User-Agent", "Mozilla/4.0");
-			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			String longurl = "version=" + URLEncoder.encode(version, "UTF-8") + "&rev=" + URLEncoder.encode(cbrev, "UTF-8") + "&build=" + URLEncoder.encode(ttlbuild, "UTF-8") + "&checkupdate=false";
-			con.setRequestProperty("Content-Length", String.valueOf(longurl.length()));
-			con.getOutputStream().write(longurl.getBytes());
-			InputStream in = con.getInputStream();
-			String url = readString(in);
-			if(url.trim().equalsIgnoreCase("0")) {
-				return false;
-			}else {
-				DownloadPluginThread dpt = new DownloadPluginThread(getDataFolder().getParent(), url, new File(getDataFolder().getParent() + File.separator + "TuxTwoLib.jar"), this);
-				if(threaded) {
-					Thread downloaderthread = new Thread(dpt);
-					downloaderthread.start();
-				}else {
-					dpt.run();
-				}
-				return true;
-			}
-		} catch (MalformedURLException e) {
-			return false;
-		} catch (UnsupportedEncodingException e) {
-			return false;
-		} catch (IOException e) {
-			return false;
+    public boolean updatePlugin(String version, boolean threaded) {
+    	if(updateAvailable(version,false).equals("0")) {
+    		return false;
+    	}
+		DownloadPluginThread dpt = new DownloadPluginThread(getDataFolder().getParent(), versionLink, new File(getServer().getUpdateFolder() + File.separator + this.getFile()), this);
+		if(threaded) {
+			Thread downloaderthread = new Thread(dpt);
+			downloaderthread.start();
+		}else {
+			dpt.run();
 		}
+		return true;
     }
 
-	public static String readString(InputStream in) throws IOException {
-		StringBuilder builder = new StringBuilder();
-		for(int c = in.read(); ((char)c) != '\r' && c != -1 ; c = in.read()) {
-			builder.append(((char)c));
-		}
-		return builder.toString();
-	}
+	private boolean read() {
+        try {
+            URL url = new URL("https://api.curseforge.com/servermods/files?projectIds=48210");
+            URLConnection conn = url.openConnection();
+            conn.setConnectTimeout(5000);
+            
+            conn.addRequestProperty("User-Agent", "Updater (by Gravity)");
 
+            conn.setDoOutput(true);
 
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            final String response = reader.readLine();
 
-	public static boolean isMineshafterPresent() {
-	    try {
-	        Class.forName("mineshafter.MineServer");
-	        return true;
-	    } catch (Exception e) {
-	        return false;
-	    }
-	}
+            final JSONArray array = (JSONArray) JSONValue.parse(response);
+
+            if (array.size() == 0) {
+                getLogger().warning("The updater could not find any files for the TuxTwoLib project!");
+                return false;
+            }
+            boolean foundupdate = false;
+            for(int i = array.size() - 1; i < -1 && !foundupdate; i--) {
+                versionName = (String) ((JSONObject) array.get(i)).get(TITLE_VALUE);
+                versionLink = (String) ((JSONObject) array.get(i)).get(LINK_VALUE);
+                String[] versionsplit = versionName.split("-");
+                if(versionsplit.length > 1) {
+                	//Let's see if it is for the correct mc version.
+                	if(versionsplit[0].equalsIgnoreCase("v" + mcversion)) {
+                		//If the current MC version is the same as the version this
+                		//plugin was built for, then we need to check build numbers
+                		if(mcversion.equalsIgnoreCase(currentMCversion)) {
+                			String buildnumber = versionsplit[1].substring(1);
+                			try {
+                    			int build = Integer.parseInt(buildnumber);
+                    			int currentbuild = Integer.parseInt(ttlbuild);
+                    			//Since the files go backwards, then if it's bigger
+                    			//than the current build it must be the newest
+                    			if(currentbuild < build) {
+                    				foundupdate = true;
+                    			}
+                			}catch(NumberFormatException e) {
+                				
+                			}
+                		}
+                	}
+                }
+            }
+            return foundupdate;
+        } catch (final IOException e) {
+            if (e.getMessage().contains("HTTP response code: 403")) {
+                getLogger().warning("dev.bukkit.org rejected the API key provided in plugins/Updater/config.yml");
+                getLogger().warning("Please double-check your configuration to ensure it is correct.");
+            } else {
+                getLogger().warning("The updater could not contact dev.bukkit.org for updating.");
+                getLogger().warning("If you have not recently modified your configuration and this is the first time you are seeing this message, the site may be experiencing temporary downtime.");
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
 
