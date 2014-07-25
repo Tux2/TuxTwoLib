@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
  */
 public class TuxTwoLib extends JavaPlugin {
 	
-	String ttlbuild = "2";
+	String ttlbuild = "3";
 	public boolean hasupdate = false;
 	public String newversion = "";
 	public boolean updatefailed = false;
@@ -31,7 +31,7 @@ public class TuxTwoLib extends JavaPlugin {
 	boolean autodownloadupdateonnewmcversion = true;
 	public boolean updatesuccessful = false;
 	
-	String currentMCversion = "1.7.9";
+	String currentMCversion = "1.7.10";
 
     String versionName = null;
     private String versionLink = null;
@@ -64,7 +64,7 @@ public class TuxTwoLib extends JavaPlugin {
     	autodownloadupdateonnewmcversion = config.getBoolean("AutoUpdateOnMinecraftVersionChange", true);
     	checkforupdates = config.getBoolean("CheckForUpdates", true);
     	
-    	Pattern bukkitversion = Pattern.compile("(\\d\\.\\d\\.?\\d?)-R(\\d\\.\\d)");
+    	Pattern bukkitversion = Pattern.compile("(\\d+\\.\\d+\\.?\\d*)-R(\\d\\.\\d)");
     	String ver = getServer().getBukkitVersion();
     	Matcher bukkitmatch = bukkitversion.matcher(ver);
     	//----------------1.5 code--------------------
