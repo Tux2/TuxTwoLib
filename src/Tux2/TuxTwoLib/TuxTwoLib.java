@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
  */
 public class TuxTwoLib extends JavaPlugin {
 	
-	String ttlbuild = "3";
+	String ttlbuild = "2";
 	public boolean hasupdate = false;
 	public String newversion = "";
 	public boolean updatefailed = false;
@@ -31,7 +31,7 @@ public class TuxTwoLib extends JavaPlugin {
 	boolean autodownloadupdateonnewmcversion = true;
 	public boolean updatesuccessful = false;
 	
-	String currentMCversion = "1.7.10";
+	String currentMCversion = "1.8.3";
 
     String versionName = null;
     private String versionLink = null;
