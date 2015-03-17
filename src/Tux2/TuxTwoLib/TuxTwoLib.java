@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
  */
 public class TuxTwoLib extends JavaPlugin {
 	
-	String ttlbuild = "2";
+	String ttlbuild = "4";
 	public boolean hasupdate = false;
 	public String newversion = "";
 	public boolean updatefailed = false;
@@ -97,6 +97,7 @@ public class TuxTwoLib extends JavaPlugin {
     			//register events for server admins.
     			getServer().getPluginManager().registerEvents(new TuxTwoLibWarningsListener(this), this);
     		}else {
+    			getServer().getPluginManager().registerEvents(new TuxTwoListener(), this);
 				//This version of minecraft is compatible. Let's do the optional update check.
 				if(checkforupdates) {
 	    			String versioncheck = updateAvailable(mcversion, true);
