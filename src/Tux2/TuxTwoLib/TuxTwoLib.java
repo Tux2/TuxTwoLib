@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
  */
 public class TuxTwoLib extends JavaPlugin {
 	
-	String ttlbuild = "4";
+	String ttlbuild = "5";
 	public boolean hasupdate = false;
 	public String newversion = "";
 	public boolean updatefailed = false;
