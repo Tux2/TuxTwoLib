@@ -1,10 +1,8 @@
 package Tux2.TuxTwoLib;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftHumanEntity;
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

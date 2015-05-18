@@ -2,10 +2,10 @@ package Tux2.TuxTwoLib;
 
 import java.util.HashMap;
 
-import net.minecraft.server.v1_8_R2.PlayerInventory;
+import net.minecraft.server.v1_8_R3.PlayerInventory;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

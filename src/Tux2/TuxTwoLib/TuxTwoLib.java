@@ -31,7 +31,7 @@ public class TuxTwoLib extends JavaPlugin {
 	boolean autodownloadupdateonnewmcversion = true;
 	public boolean updatesuccessful = false;
 	
-	String currentMCversion = "1.8.3";
+	String currentMCversion = "1.8.4";
 
     String versionName = null;
     private String versionLink = null;
