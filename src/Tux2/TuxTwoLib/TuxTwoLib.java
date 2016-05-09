@@ -22,7 +22,7 @@ import org.json.simple.JSONValue;
  */
 public class TuxTwoLib extends JavaPlugin {
 	
-	String ttlbuild = "5";
+	String ttlbuild = "7";
 	public boolean hasupdate = false;
 	public String newversion = "";
 	public boolean updatefailed = false;
@@ -31,7 +31,8 @@ public class TuxTwoLib extends JavaPlugin {
 	boolean autodownloadupdateonnewmcversion = true;
 	public boolean updatesuccessful = false;
 	
-	String currentMCversion = "1.8.4";
+	String currentMCversion = "1.9";
+	String currentNMS = "v1_9_R1";
 
     String versionName = null;
     private String versionLink = null;
@@ -70,7 +71,7 @@ public class TuxTwoLib extends JavaPlugin {
     	//----------------1.5 code--------------------
     	if(bukkitmatch.find()) {
     		mcversion = bukkitmatch.group(1);
-    		if(!mcversion.equals(currentMCversion)) {
+    		if(!mcversion.equals(currentMCversion) && !currentNMS.equals(getNMSVersion())) {
     			if(autodownloadupdateonnewmcversion) {
 					getLogger().warning("Current version incompatible with this version of Craftbukkit! Checking for and downloading a compatible version.");
     				boolean result = updatePlugin(mcversion, false);
@@ -155,6 +156,10 @@ public class TuxTwoLib extends JavaPlugin {
     }
 
 	private boolean read() {
+		String currentminecraftversion = mcversion;
+    	if(currentNMS.equals(getNMSVersion())) {
+    		currentminecraftversion = currentMCversion;
+    	}
         try {
             URL url = new URL("https://api.curseforge.com/servermods/files?projectIds=48210");
             URLConnection conn = url.openConnection();
@@ -180,10 +185,10 @@ public class TuxTwoLib extends JavaPlugin {
                 String[] versionsplit = versionName.split("-");
                 if(versionsplit.length > 1) {
                 	//Let's see if it is for the correct mc version.
-                	if(versionsplit[0].equalsIgnoreCase("v" + mcversion)) {
+                	if(versionsplit[0].equalsIgnoreCase("v" + currentminecraftversion)) {
                 		//If the current MC version is the same as the version this
                 		//plugin was built for, then we need to check build numbers
-                		if(mcversion.equalsIgnoreCase(currentMCversion)) {
+                		if(currentminecraftversion.equalsIgnoreCase(currentMCversion)) {
                 			String buildnumber = versionsplit[1].substring(1);
                 			try {
                     			int build = Integer.parseInt(buildnumber);
@@ -213,5 +218,11 @@ public class TuxTwoLib extends JavaPlugin {
             return false;
         }
     }
+	
+	private String getNMSVersion() {
+		String name = getServer().getClass().getPackage().getName();
+		String mcVersion = name.substring(name.lastIndexOf('.') + 1);
+		return mcVersion;
+	}
 }
 
