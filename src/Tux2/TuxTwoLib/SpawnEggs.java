@@ -1,17 +1,17 @@
 package Tux2.TuxTwoLib;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import Tux2.TuxTwoLib.attributes.Attributes;
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
+import net.minecraft.server.v1_9_R2.NBTTagCompound;
 
 public class SpawnEggs {
 	
 	public static ItemStack getSpawnEgg(EntityType type, int amount) {
-		net.minecraft.server.v1_9_R1.ItemStack stack = CraftItemStack.asNMSCopy(new ItemStack(Material.MONSTER_EGG, amount));
+		net.minecraft.server.v1_9_R2.ItemStack stack = CraftItemStack.asNMSCopy(new ItemStack(Material.MONSTER_EGG, amount));
 		String name = "";
 		switch (type) {
 		case ARMOR_STAND:
@@ -212,7 +212,7 @@ public class SpawnEggs {
 	}
 	
 	public static ItemStack getSpawnEgg(String name, int amount) {
-		net.minecraft.server.v1_9_R1.ItemStack stack = CraftItemStack.asNMSCopy(new ItemStack(Material.MONSTER_EGG, amount));
+		net.minecraft.server.v1_9_R2.ItemStack stack = CraftItemStack.asNMSCopy(new ItemStack(Material.MONSTER_EGG, amount));
 		NBTTagCompound tag = stack.getTag();
 		if(tag == null) {
 			tag = new NBTTagCompound();
@@ -226,7 +226,7 @@ public class SpawnEggs {
 	
 	public static EntityType getSpawnEggType(ItemStack is) {
 		EntityType type = null;
-		net.minecraft.server.v1_9_R1.ItemStack mcis = Attributes.getMinecraftItemStack(is);
+		net.minecraft.server.v1_9_R2.ItemStack mcis = Attributes.getMinecraftItemStack(is);
 		if(mcis == null) {
 			return null;
 		}
