@@ -10,15 +10,15 @@ import net.minecraft.server.v1_9_R2.NBTTagCompound;
 import net.minecraft.server.v1_9_R2.NBTTagList;
 
 public class TuxTwoPlayerHead {
-	
+
 	public static ItemStack getHead(ItemStack is, NMSHeadData head) {
 		return getHead(is, head.getId(), head.getTexture());
 	}
-	
-	public static ItemStack getHead(ItemStack is, UUID id , String texture) {
+
+	public static ItemStack getHead(ItemStack is, UUID id, String texture) {
 		net.minecraft.server.v1_9_R2.ItemStack stack = CraftItemStack.asNMSCopy(is);
 		NBTTagCompound tag = stack.getTag();
-		if(tag == null) {
+		if (tag == null) {
 			tag = new NBTTagCompound();
 		}
 		NBTTagCompound skullowner = new NBTTagCompound();
@@ -34,35 +34,35 @@ public class TuxTwoPlayerHead {
 		stack.setTag(tag);
 		return CraftItemStack.asCraftMirror(stack);
 	}
-	
+
 	public static NMSHeadData getHeadData(ItemStack is) {
-		try{
+		try {
 			net.minecraft.server.v1_9_R2.ItemStack mcis = Attributes.getMinecraftItemStack(is);
-			if(mcis == null) {
+			if (mcis == null) {
 				return null;
 			}
 			NBTTagCompound tag = mcis.getTag();
-			if(tag == null) {
+			if (tag == null) {
 				return null;
 			}
 			NBTTagCompound skullowner = tag.getCompound("SkullOwner");
-			if(skullowner == null) {
+			if (skullowner == null) {
 				return null;
 			}
 			UUID id = UUID.fromString(skullowner.getString("Id"));
 			NBTTagCompound properties = skullowner.getCompound("Properties");
-			if(properties != null) {
+			if (properties != null) {
 				NBTTagList textures = properties.getList("textures", 10);
-				if(textures != null && textures.size() > 0) {
+				if (textures != null && textures.size() > 0) {
 					NBTTagCompound ntexture = textures.get(0);
-					if(ntexture != null) {
+					if (ntexture != null) {
 						String texture = ntexture.getString("Value");
 						return new NMSHeadData(id, texture);
 					}
 				}
 			}
 			return null;
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;
 		}
