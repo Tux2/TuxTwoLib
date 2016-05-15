@@ -63,10 +63,7 @@ public class Attributes {
 			}else {
 				return original;
 			}
-		}catch (InstantiationException ex) {
-			ex.printStackTrace();
-			return original;
-		}catch (IllegalAccessException ex) {
+		}catch (InstantiationException | IllegalAccessException ex) {
 			ex.printStackTrace();
 			return original;
 		}
@@ -104,10 +101,7 @@ public class Attributes {
 			tag.set("AttributeModifiers",list);
 			stack.setTag(tag);
 			return CraftItemStack.asCraftMirror(stack);
-		}catch (InstantiationException ex) {
-			ex.printStackTrace();
-			return original;
-		}catch (IllegalAccessException ex) {
+		}catch (InstantiationException | IllegalAccessException ex) {
 			ex.printStackTrace();
 			return original;
 		}
@@ -165,18 +159,9 @@ public class Attributes {
 		            CraftItemStack.setItemMeta(mis, is.getItemMeta());
 		        }
 				return mis;
-			} catch (NoSuchFieldException e1) {
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		if(is instanceof CraftItemStack) {
@@ -186,18 +171,9 @@ public class Attributes {
 				handle.setAccessible(true);
 				net.minecraft.server.v1_9_R2.ItemStack mis = (net.minecraft.server.v1_9_R2.ItemStack) handle.get(cis);
 				return mis;
-			} catch (NoSuchFieldException e1) {
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		return null;

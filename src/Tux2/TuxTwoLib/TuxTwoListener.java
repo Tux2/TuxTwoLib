@@ -21,18 +21,9 @@ public class TuxTwoListener implements Listener {
 				Field f = CraftHumanEntity.class.getDeclaredField("inventory");
 				f.setAccessible(true);
 				f.set(cplayer, new TuxTwoInventoryPlayer((CraftInventoryPlayer)f.get(cplayer)));
-			} catch (NoSuchFieldException e1) {
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
