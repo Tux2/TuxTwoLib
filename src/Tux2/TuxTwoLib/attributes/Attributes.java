@@ -1,11 +1,11 @@
 package Tux2.TuxTwoLib.attributes;
 
-import net.minecraft.server.v1_9_R1.Item;
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
-import net.minecraft.server.v1_9_R1.NBTTagList;
+import net.minecraft.server.v1_9_R2.Item;
+import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import net.minecraft.server.v1_9_R2.NBTTagList;
 
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R2.util.CraftMagicNumbers;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
@@ -48,7 +48,7 @@ public class Attributes {
 	public static ItemStack apply(ItemStack original, Attribute attribute, boolean replace){
 		try {
 			if(original instanceof CraftItemStack) {
-				net.minecraft.server.v1_9_R1.ItemStack stack = CraftItemStack.asNMSCopy(original);
+				net.minecraft.server.v1_9_R2.ItemStack stack = CraftItemStack.asNMSCopy(original);
 				NBTTagCompound tag = stack.getTag();
 				NBTTagList list;
 				if(replace) {
@@ -63,10 +63,7 @@ public class Attributes {
 			}else {
 				return original;
 			}
-		}catch (InstantiationException ex) {
-			ex.printStackTrace();
-			return original;
-		}catch (IllegalAccessException ex) {
+		}catch (InstantiationException | IllegalAccessException ex) {
 			ex.printStackTrace();
 			return original;
 		}
@@ -85,7 +82,7 @@ public class Attributes {
 			return original;
 		}
 		try {
-			net.minecraft.server.v1_9_R1.ItemStack stack = getMinecraftItemStack(original);
+			net.minecraft.server.v1_9_R2.ItemStack stack = getMinecraftItemStack(original);
 			NBTTagCompound tag = stack.getTag();
 			if(tag == null) {
 				tag = new NBTTagCompound();
@@ -104,10 +101,7 @@ public class Attributes {
 			tag.set("AttributeModifiers",list);
 			stack.setTag(tag);
 			return CraftItemStack.asCraftMirror(stack);
-		}catch (InstantiationException ex) {
-			ex.printStackTrace();
-			return original;
-		}catch (IllegalAccessException ex) {
+		}catch (InstantiationException | IllegalAccessException ex) {
 			ex.printStackTrace();
 			return original;
 		}
@@ -121,7 +115,7 @@ public class Attributes {
 	
 	public static ArrayList<Attribute> fromStack(ItemStack is){
 		try{
-			net.minecraft.server.v1_9_R1.ItemStack mcis = getMinecraftItemStack(is);
+			net.minecraft.server.v1_9_R2.ItemStack mcis = getMinecraftItemStack(is);
 			if(mcis == null) {
 				return new ArrayList<Attribute>();
 			}
@@ -145,7 +139,7 @@ public class Attributes {
 		}
 	}
 	
-	public static net.minecraft.server.v1_9_R1.ItemStack getMinecraftItemStack(ItemStack is) {
+	public static net.minecraft.server.v1_9_R2.ItemStack getMinecraftItemStack(ItemStack is) {
 		if(!(is instanceof CraftItemStack)) {
 
 	        Item item = CraftMagicNumbers.getItem(is.getType());
@@ -154,29 +148,20 @@ public class Attributes {
 	            return null;
 	        }
 
-	        net.minecraft.server.v1_9_R1.ItemStack stack = new net.minecraft.server.v1_9_R1.ItemStack(item, is.getAmount(), is.getDurability());
+	        net.minecraft.server.v1_9_R2.ItemStack stack = new net.minecraft.server.v1_9_R2.ItemStack(item, is.getAmount(), is.getDurability());
 	        
 			CraftItemStack cis = CraftItemStack.asCraftMirror(stack);
 			try {
 				Field handle = CraftItemStack.class.getDeclaredField("handle");
 				handle.setAccessible(true);
-				net.minecraft.server.v1_9_R1.ItemStack mis = (net.minecraft.server.v1_9_R1.ItemStack) handle.get(cis);
+				net.minecraft.server.v1_9_R2.ItemStack mis = (net.minecraft.server.v1_9_R2.ItemStack) handle.get(cis);
 				if (is.hasItemMeta()) {
 		            CraftItemStack.setItemMeta(mis, is.getItemMeta());
 		        }
 				return mis;
-			} catch (NoSuchFieldException e1) {
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		if(is instanceof CraftItemStack) {
@@ -184,20 +169,11 @@ public class Attributes {
 			try {
 				Field handle = CraftItemStack.class.getDeclaredField("handle");
 				handle.setAccessible(true);
-				net.minecraft.server.v1_9_R1.ItemStack mis = (net.minecraft.server.v1_9_R1.ItemStack) handle.get(cis);
+				net.minecraft.server.v1_9_R2.ItemStack mis = (net.minecraft.server.v1_9_R2.ItemStack) handle.get(cis);
 				return mis;
-			} catch (NoSuchFieldException e1) {
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		return null;
