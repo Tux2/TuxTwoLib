@@ -1,9 +1,6 @@
 name: TuxTwoLib
-
 main: Tux2.TuxTwoLib.TuxTwoLib
-
-version: 1.9-b7
-
+version: 1.10
 permissions:
     tuxtwolib.notices: 
         description: Allows The player to get notices about updates.
