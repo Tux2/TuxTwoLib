@@ -1,13 +1,12 @@
 package Tux2.TuxTwoLib;
 
-import java.util.UUID;
-
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import Tux2.TuxTwoLib.attributes.Attributes;
+import net.minecraft.server.v1_10_R1.NBTTagCompound;
+import net.minecraft.server.v1_10_R1.NBTTagList;
+import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
-import Tux2.TuxTwoLib.attributes.Attributes;
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
-import net.minecraft.server.v1_9_R1.NBTTagList;
+import java.util.UUID;
 
 public class TuxTwoPlayerHead {
 	
@@ -16,7 +15,7 @@ public class TuxTwoPlayerHead {
 	}
 	
 	public static ItemStack getHead(ItemStack is, UUID id , String texture) {
-		net.minecraft.server.v1_9_R1.ItemStack stack = CraftItemStack.asNMSCopy(is);
+		net.minecraft.server.v1_10_R1.ItemStack stack = CraftItemStack.asNMSCopy(is);
 		NBTTagCompound tag = stack.getTag();
 		if(tag == null) {
 			tag = new NBTTagCompound();
@@ -37,7 +36,7 @@ public class TuxTwoPlayerHead {
 	
 	public static NMSHeadData getHeadData(ItemStack is) {
 		try{
-			net.minecraft.server.v1_9_R1.ItemStack mcis = Attributes.getMinecraftItemStack(is);
+			net.minecraft.server.v1_10_R1.ItemStack mcis = Attributes.getMinecraftItemStack(is);
 			if(mcis == null) {
 				return null;
 			}
