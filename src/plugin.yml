@@ -2,7 +2,7 @@ name: TuxTwoLib
 
 main: Tux2.TuxTwoLib.TuxTwoLib
 
-version: 1.9-b7
+version: 1.12-b8
 
 permissions:
     tuxtwolib.notices: 
